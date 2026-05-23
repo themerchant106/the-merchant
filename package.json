@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "^18.18.0 || >= 20.0.0"
+  },
   "scripts": {
     "extract": "node scripts/extract.mjs",
     "extract:test": "node --test scripts/extract.test.mjs",
