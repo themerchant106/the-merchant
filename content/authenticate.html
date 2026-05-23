@@ -1,0 +1,401 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parch:   #f0e9d8;
+    --parch2:  #e8dfc8;
+    --parch3:  #dfd4b8;
+    --ink:     #0e0c08;
+    --ink2:    #1a160e;
+    --ink3:    #2a2116;
+    --gold:    #c4a558;
+    --goldlt:  #d4b870;
+    --golddim: #8a7040;
+    --muted:   #7a6e58;
+    --border:  rgba(196,165,88,0.18);
+    --borderl: rgba(196,165,88,0.28);
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body {
+    background:var(--ink);
+    color:var(--parch2);
+    font-family:'Crimson Pro',Georgia,serif;
+    font-weight:300;
+    line-height:1.75;
+    overflow-x:hidden;
+  }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.2rem 6vw;
+    border-bottom:1px solid transparent;
+    transition:background 0.4s, border-color 0.4s;
+  }
+  nav.scrolled {
+    background:rgba(14,12,8,0.97);
+    border-color:var(--border);
+    backdrop-filter:blur(8px);
+  }
+  .nav-logo img {
+    height:52px;
+    mix-blend-mode:screen;
+    opacity:0.9;
+  }
+  .nav-links { display:flex; gap:2.2rem; list-style:none; }
+  .nav-links a {
+    font-family:'Cinzel',serif; font-size:0.6rem;
+    letter-spacing:0.22em; color:var(--parch2);
+    text-decoration:none; opacity:0.55;
+    transition:opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { opacity:1; color:var(--gold); }
+
+  /* HERO */
+  .sa-hero {
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center; padding:10rem 8vw 8rem;
+    background:var(--ink);
+    position:relative; overflow:hidden;
+  }
+  .sa-hero::before {
+    content:''; position:absolute; inset:3rem;
+    border:1px solid var(--border); pointer-events:none;
+  }
+  .sa-hero::after {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse at center, rgba(196,165,88,0.04) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .sa-logo-wrap { margin-bottom:3rem; animation:fadeUp 1s ease both; }
+  .sa-logo-wrap img {
+    width:200px; height:200px; object-fit:contain;
+    filter:brightness(1.1) drop-shadow(0 0 40px rgba(196,165,88,0.3));
+  }
+  .sa-eyebrow {
+    font-family:'Cinzel',serif; font-size:0.58rem;
+    letter-spacing:0.38em; color:var(--gold);
+    margin-bottom:2rem;
+    display:flex; align-items:center; justify-content:center; gap:1rem;
+    animation:fadeUp 1s ease 0.1s both;
+  }
+  .sa-eyebrow::before, .sa-eyebrow::after {
+    content:''; width:28px; height:1px; background:var(--gold);
+  }
+  .sa-hero h1 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(2.4rem,5vw,4.5rem);
+    font-weight:300; line-height:1.1; color:var(--parch);
+    margin-bottom:2rem; max-width:700px;
+    animation:fadeUp 1s ease 0.2s both;
+  }
+  .sa-hero h1 em { font-style:italic; color:var(--goldlt); }
+  .sa-hero p.lead {
+    font-size:1.12rem; color:var(--parch2); opacity:0.75;
+    line-height:1.85; max-width:560px; margin-bottom:3.5rem;
+    animation:fadeUp 1s ease 0.3s both;
+  }
+
+  /* NOTICE BOX */
+  .notice-box {
+    background:var(--ink2);
+    border:1px solid var(--borderl);
+    padding:3rem 3.5rem; max-width:680px;
+    margin:0 auto; text-align:left;
+    animation:fadeUp 1s ease 0.4s both;
+    position:relative; z-index:1;
+  }
+  .notice-tag {
+    font-family:'Cinzel',serif; font-size:0.55rem;
+    letter-spacing:0.3em; color:var(--gold);
+    margin-bottom:1.5rem; display:block;
+  }
+  .notice-box h2 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.7rem; font-weight:300;
+    color:var(--parch); line-height:1.3; margin-bottom:1.2rem;
+  }
+  .notice-box p {
+    font-size:1.05rem; color:var(--parch2);
+    line-height:1.82; margin-bottom:1.5rem; opacity:0.8;
+  }
+  .notice-box p:last-of-type { margin-bottom:2.5rem; }
+  .contact-options {
+    display:flex; flex-direction:column; gap:1rem;
+    margin-top:2rem; padding-top:2rem;
+    border-top:1px solid var(--border);
+  }
+  .contact-option {
+    display:flex; align-items:baseline; gap:1.2rem;
+    font-size:1rem; color:var(--parch2);
+  }
+  .contact-option .label {
+    font-family:'Cinzel',serif; font-size:0.52rem;
+    letter-spacing:0.22em; color:var(--gold);
+    flex-shrink:0; min-width:100px;
+  }
+  .contact-option a {
+    color:var(--goldlt); text-decoration:none;
+    border-bottom:1px solid var(--border);
+    padding-bottom:0.1rem;
+    transition:color 0.2s, border-color 0.2s;
+  }
+  .contact-option a:hover { color:var(--gold); border-color:var(--gold); }
+
+  /* EXPECT SECTION */
+  .expect-section { background:var(--ink2); padding:8rem 8vw; }
+  .expect-header {
+    text-align:center; max-width:640px; margin:0 auto 5rem;
+  }
+  .expect-header .section-tag {
+    font-family:'Cinzel',serif; font-size:0.57rem;
+    letter-spacing:0.35em; color:var(--gold);
+    display:flex; align-items:center; justify-content:center; gap:1rem;
+    margin-bottom:2.2rem;
+  }
+  .expect-header .section-tag::before, .expect-header .section-tag::after {
+    content:''; width:28px; height:1px; background:var(--gold);
+  }
+  .expect-header h2 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(2.1rem,3.8vw,3.5rem);
+    font-weight:300; line-height:1.12; margin-bottom:1.5rem; color:var(--parch);
+  }
+  .expect-header h2 em { font-style:italic; color:var(--goldlt); }
+  .expect-header p { font-size:1.05rem; color:var(--parch2); opacity:0.7; line-height:1.8; }
+  .expect-grid {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:1px; background:var(--border); border:1px solid var(--border);
+  }
+  .expect-card {
+    background:var(--ink2); padding:3rem 2.5rem; transition:background 0.3s;
+  }
+  .expect-card:hover { background:var(--ink3); }
+  .expect-num {
+    font-family:'Cinzel',serif; font-size:0.52rem;
+    letter-spacing:0.3em; color:var(--gold); opacity:0.65;
+    margin-bottom:1.2rem; display:block;
+  }
+  .expect-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.4rem; font-weight:400; color:var(--parch);
+    line-height:1.3; margin-bottom:1rem;
+  }
+  .expect-desc { font-size:1rem; line-height:1.78; color:var(--parch2); opacity:0.72; }
+
+  /* TRANSPARENCY QUOTE */
+  .transparency-section {
+    background:var(--ink); padding:8rem 8vw; text-align:center; position:relative;
+  }
+  .transparency-section::before {
+    content:''; position:absolute; inset:2.5rem;
+    border:1px solid var(--border); pointer-events:none;
+  }
+  .q-mark {
+    font-family:'Cormorant Garamond',serif;
+    font-size:7rem; line-height:0.6;
+    color:var(--goldlt); opacity:0.15; display:block; margin-bottom:1rem;
+  }
+  .transparency-section blockquote {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(1.2rem,2.2vw,1.7rem);
+    font-style:italic; line-height:1.65;
+    max-width:780px; margin:0 auto 2rem; color:var(--parch2);
+  }
+  .q-attr {
+    font-family:'Cinzel',serif; font-size:0.57rem;
+    letter-spacing:0.3em; color:var(--gold);
+  }
+
+  /* THANK YOU */
+  .thankyou-section {
+    background:var(--ink2); padding:7rem 8vw; text-align:center;
+  }
+  .thankyou-section h2 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(1.8rem,3.5vw,3rem);
+    font-weight:300; color:var(--parch);
+    margin-bottom:1.5rem; line-height:1.2;
+  }
+  .thankyou-section h2 em { font-style:italic; color:var(--goldlt); }
+  .thankyou-section p {
+    font-size:1.08rem; color:var(--parch2); opacity:0.72;
+    line-height:1.82; max-width:520px; margin:0 auto 3rem;
+  }
+  .cta-link {
+    display:inline-flex; align-items:center; gap:0.9rem;
+    font-family:'Cinzel',serif; font-size:0.6rem;
+    letter-spacing:0.28em; color:var(--gold);
+    text-decoration:none; border-bottom:1px solid var(--border);
+    padding-bottom:0.4rem; transition:color 0.2s, border-color 0.2s;
+  }
+  .cta-link:hover { color:var(--goldlt); border-color:var(--gold); }
+  .cta-link::after { content:'→'; font-size:0.85rem; }
+
+  /* FOOTER */
+  footer {
+    border-top:1px solid var(--border);
+    padding:5rem 8vw 3rem; background:var(--ink);
+  }
+  .footer-top {
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding-bottom:3rem; border-bottom:1px solid var(--border); margin-bottom:2.5rem;
+  }
+  .footer-brand span:first-child {
+    display:block; font-family:'Cinzel',serif;
+    font-size:1.15rem; letter-spacing:0.28em; color:var(--parch); margin-bottom:0.4rem;
+  }
+  .footer-brand .sub {
+    font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.3em; color:var(--gold);
+  }
+  .footer-links { display:flex; gap:2.5rem; align-items:center; }
+  .footer-links a {
+    font-family:'Cinzel',serif; font-size:0.57rem;
+    letter-spacing:0.2em; color:var(--muted); text-decoration:none; transition:color 0.2s;
+  }
+  .footer-links a:hover { color:var(--gold); }
+  .footer-bottom { display:flex; justify-content:space-between; align-items:center; }
+  .footer-copy { font-size:0.78rem; color:var(--muted); letter-spacing:0.06em; }
+  .footer-tm {
+    font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.25em; color:var(--gold); opacity:0.7;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(28px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .reveal { opacity:0; transform:translateY(22px); transition:opacity 0.95s ease, transform 0.95s ease; }
+  .reveal.visible { opacity:1; transform:none; }
+  .d1 { transition-delay:0.15s; } .d2 { transition-delay:0.30s; }
+
+  @media(max-width:900px) {
+    .footer-top { flex-direction:column; gap:2rem; }
+    .footer-links { flex-wrap:wrap; gap:1.5rem; }
+    .nav-links { display:none; }
+    .expect-grid { grid-template-columns:1fr 1fr; }
+    .sa-hero::before { inset:1.5rem; }
+  }
+  @media(max-width:600px) {
+    .expect-grid { grid-template-columns:1fr; }
+    .notice-box { padding:2rem; }
+    .contact-option { flex-direction:column; gap:0.4rem; }
+  }
+</style>
+
+
+<nav id="nav">
+ 
+ 
+</nav>
+
+<!-- HERO -->
+<div class="sa-hero">
+  <div class="sa-logo-wrap">
+    <img src="/images/authenticate/img-0.png" alt="Serendib Authenticate">
+  </div>
+  <div class="sa-eyebrow">SERENDIB AUTHENTICATE&#8482;</div>
+  <h1>With thanks for<br>your <em>patience</em></h1>
+  <p class="lead">Our Serendib Authenticate Portal is currently under construction as we refine the experience and strengthen our verification systems.</p>
+
+  <div class="notice-box">
+    <span class="notice-tag">IN THE MEANTIME</span>
+    <h2>We are here for you</h2>
+    <p>Please reach out with your invoice number and we will provide your full authentication details within 24 hours. We appreciate your patience and your trust in The Merchant.</p>
+    <p>We apologize for any inconvenience and truly appreciate your understanding as we build something worthy of the standard we hold.</p>
+    <div class="contact-options">
+      <div class="contact-option">
+        <span class="label">SUPPORT</span>
+        <a href="the-merchant-v8.html#contact">Customer Support Portal</a>
+      </div>
+      <div class="contact-option">
+        <span class="label">EMAIL</span>
+        <a href="mailto:contact@the-merchant.us">contact@the-merchant.us</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT TO EXPECT -->
+<section class="expect-section">
+  <div class="expect-header reveal">
+    <div class="section-tag">WHAT SERENDIB AUTHENTICATE DELIVERS</div>
+    <h2>The five pillars of<br><em>provable quality</em></h2>
+    <p>When the portal is live, every batch of The Merchant Ceylon Cinnamon will be fully traceable through these five assurances.</p>
+  </div>
+  <div class="expect-grid reveal">
+    <div class="expect-card">
+      <span class="expect-num">01</span>
+      <div class="expect-title">Verified Origin</div>
+      <p class="expect-desc">You will know exactly where your cinnamon comes from; the region, the farm, and the harvest season, verified and recorded.</p>
+    </div>
+    <div class="expect-card">
+      <span class="expect-num">02</span>
+      <div class="expect-title">Craftsmanship Controls</div>
+      <p class="expect-desc">Full documentation of how every batch was handled, prepared, and protected from harvest through to delivery.</p>
+    </div>
+    <div class="expect-card">
+      <span class="expect-num">03</span>
+      <div class="expect-title">Scientific Validation</div>
+      <p class="expect-desc">Laboratory-confirmed identity of <em>Cinnamomum verum</em>; confidence backed by evidence, not assumption.</p>
+    </div>
+    <div class="expect-card">
+      <span class="expect-num">04</span>
+      <div class="expect-title">Traceable Badge Numbers</div>
+      <p class="expect-desc">Every batch carries a unique badge number; trace and own the complete story of what you purchased.</p>
+    </div>
+    <div class="expect-card">
+      <span class="expect-num">05</span>
+      <div class="expect-title">Protection Against Imitation</div>
+      <p class="expect-desc">Full protection against mislabeling and substitution; so "Ceylon" means Ceylon, always and without exception.</p>
+    </div>
+    <div class="expect-card" style="opacity:0.45;">
+      <span class="expect-num">&#8212; &#8212;</span>
+      <div class="expect-title" style="font-style:italic;">Coming Soon</div>
+      <p class="expect-desc">The portal will launch when it meets the same standard we hold for every product we steward.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSPARENCY QUOTE -->
+<div class="transparency-section reveal">
+  <span class="q-mark">"</span>
+  <blockquote>"Transparency is not an accessory to quality; it is its foundation. We believe you deserve clarity at every step."</blockquote>
+  <div class="q-attr">THE MERCHANT</div>
+</div>
+
+<!-- THANK YOU -->
+<div class="thankyou-section reveal">
+  <h2>Thank you for trusting<br><em>The Merchant</em></h2>
+  <p>Your patience is not taken lightly. We are building something that matches the integrity of every product we carry; and we will not launch until it does.</p>
+  <a href="/" class="cta-link">RETURN HOME</a>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span>THE MERCHANT</span>
+      <span class="sub">A HERITAGE TRADING HOUSE &middot; CEYLON CINNAMON</span>
+    </div>
+    <nav class="footer-links">
+      <a href="/">Home</a>
+            <a href="/shop">Ceylon Cinnamon</a>
+
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&#169; 2024 The Merchant. All Rights Reserved.</p>
+    <span class="footer-tm">SERENDIB AUTHENTICATE&#8482;</span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(e => e.forEach(r => r.isIntersecting && r.target.classList.add('visible')), {threshold:0.1});
+  reveals.forEach(r => io.observe(r));
+</script>

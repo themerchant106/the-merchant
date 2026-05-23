@@ -1,0 +1,1016 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --parch:   #f0e9d8;
+  --parch2:  #e6dcc8;
+  --parch3:  #ddd0b0;
+  --ivory:   #f4efe2;
+  --ink:     #0c0b08;
+  --ink2:    #1e1a12;
+  --gold:    #c4a558;
+  --goldlt:  #d9c07a;
+  --golddim: #8a7040;
+  --muted:   #5c5540;
+  --border:  rgba(138,112,64,0.22);
+  --borderl: rgba(138,112,64,0.12);
+  --text:    #1a1610;
+  --textlt:  #3d3828;
+  --textmd:  #5c5540;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--parch);color:var(--text);
+  font-family:'Crimson Pro',Georgia,serif;
+  font-weight:300;line-height:1.8;overflow-x:hidden;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--parch)}
+::-webkit-scrollbar-thumb{background:var(--golddim)}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 8vw;
+  background:rgba(240,233,216,0.82);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(138,112,64,0.10);
+  transition:background 0.5s,border-bottom 0.5s;
+}
+nav.scrolled{
+  background:rgba(240,233,216,0.97);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(8px);
+}
+.nav-logo img{height:52px;opacity:1;}
+.nav-links{
+  display:flex;gap:2.4rem;list-style:none;
+  font-family:'Cinzel',serif;font-size:0.8rem;font-weight:500;letter-spacing:0.2em;
+}
+.nav-links a{color:var(--text);text-decoration:none;transition:color 0.3s;}
+.nav-links a:hover{color:var(--golddim)}
+.nav-cta{
+  font-family:'Cinzel',serif;font-size:0.8rem;font-weight:500;letter-spacing:0.18em;
+  color:var(--ink);border:1px solid var(--golddim);
+  padding:0.55rem 1.4rem;text-decoration:none;transition:all 0.3s;
+}
+.nav-cta:hover{background:var(--golddim);color:var(--parch);}
+
+/* ── HERO ── */
+.hero{
+  position:relative;height:auto;min-height:560px;
+  display:grid;grid-template-columns:1fr 1fr;overflow:hidden;
+}
+.hero-left{
+  position:relative;z-index:2;background:var(--parch);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 8vw 5rem 8vw;
+}
+.hero-left::after{
+  content:'';position:absolute;top:0;right:-80px;width:80px;height:100%;
+  background:linear-gradient(to right,var(--parch),transparent);
+  z-index:3;pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:'Cinzel',serif;font-size:0.62rem;
+  letter-spacing:0.25em;color:var(--golddim);
+  margin-bottom:1.2rem;display:flex;align-items:center;gap:0.9rem;
+}
+.hero-eyebrow::before{content:'';display:block;width:2rem;height:1px;background:var(--gold);}
+.hero-headline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.8rem,5vw,4.8rem);
+  font-weight:300;line-height:1.08;color:var(--ink);margin-bottom:2rem;
+}
+.hero-headline em{font-style:italic;color:var(--golddim);}
+.hero-sub{
+  font-size:1.05rem;color:var(--textmd);
+  max-width:370px;line-height:1.72;margin-bottom:2.4rem;
+}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.btn-dark{
+  font-family:'Cinzel',serif;font-size:0.63rem;letter-spacing:0.13em;
+  background:var(--ink);color:var(--parch);
+  padding:0.78rem 1.7rem;text-decoration:none;
+  border:1px solid var(--ink);transition:all 0.3s;
+}
+.btn-dark:hover{background:var(--golddim);border-color:var(--golddim);}
+.btn-ghost{
+  font-family:'Cinzel',serif;font-size:0.63rem;letter-spacing:0.13em;
+  background:transparent;color:var(--ink);
+  padding:0.78rem 1.7rem;text-decoration:none;
+  border:1px solid var(--border);transition:all 0.3s;
+}
+.btn-ghost:hover{border-color:var(--golddim);color:var(--golddim);}
+.btn-outline-gold{
+  display:inline-flex;align-items:center;gap:1rem;
+  font-family:'Cinzel',serif;font-size:0.63rem;letter-spacing:0.14em;
+  color:var(--golddim);border:1px solid var(--border);
+  padding:0.78rem 1.7rem;text-decoration:none;
+  transition:all 0.3s;background:transparent;cursor:pointer;
+}
+.btn-outline-gold:hover{border-color:var(--golddim);color:var(--ink);background:rgba(138,112,64,0.06);}
+/* Hero right — warm dark bg so PNG edges blend */
+.hero-right{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg, #2a2318 0%, #1a160e 50%, #0e0c08 100%);
+}
+.hero-right img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:7vw;
+  font-family:'Cinzel',serif;font-size:0.57rem;letter-spacing:0.22em;
+  color:var(--golddim);z-index:4;
+  display:flex;align-items:center;gap:0.7rem;
+  animation:pulse 3s ease-in-out infinite;
+}
+.hero-scroll::before{content:'';display:block;width:1.5rem;height:1px;background:var(--golddim);}
+@keyframes pulse{0%,100%{opacity:0.38}50%{opacity:0.9}}
+
+/* ── TYPE UTILITIES ── */
+.section-tag{
+  font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;letter-spacing:0.22em;
+  color:var(--golddim);margin-bottom:1.1rem;
+  display:flex;align-items:center;gap:0.8rem;text-transform:uppercase;
+}
+.section-tag::before{content:'';display:block;width:1.8rem;height:1px;background:var(--gold);}
+.section-tag-light{
+  font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.22em;
+  color:var(--gold);margin-bottom:1.1rem;
+  display:flex;align-items:center;gap:0.8rem;
+}
+.section-tag-light::before{content:'';display:block;width:1.8rem;height:1px;background:var(--gold);}
+.display{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,3.8vw,3.6rem);
+  font-weight:300;line-height:1.12;color:var(--ink);margin-bottom:2rem;
+}
+.display em{font-style:italic;color:var(--golddim);}
+.display-light{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,3.8vw,3.6rem);
+  font-weight:300;line-height:1.12;color:var(--parch);
+}
+.display-light em{font-style:italic;color:var(--goldlt);}
+
+/* ── ABOUT ── */
+#about{
+  background:var(--parch);padding:5rem 8vw;
+  display:grid;grid-template-columns:340px 1fr;
+  gap:7vw;align-items:start;
+  border-top:1px solid var(--borderl);
+}
+.portrait-frame img{
+  width:340px;max-width:100%;
+  object-fit:cover;border:1px solid var(--border);
+  filter:sepia(8%) contrast(1.03);
+}
+.portrait-caption{
+  font-family:'Cinzel',serif;font-size:0.57rem;letter-spacing:0.2em;
+  color:var(--golddim);margin-top:0.9rem;text-align:center;
+}
+.about-body{
+  font-size:1.07rem;color:var(--textlt);line-height:1.85;max-width:560px;
+}
+.about-blockquote{
+  margin-top:2rem;border-left:2px solid var(--gold);
+  padding-left:1.6rem;max-width:540px;
+}
+.about-blockquote p{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.16rem;font-style:italic;color:var(--text);line-height:1.65;
+}
+.about-blockquote cite{
+  display:block;margin-top:0.7rem;
+  font-family:'Cinzel',serif;font-size:0.57rem;
+  letter-spacing:0.18em;color:var(--golddim);font-style:normal;
+}
+
+/* ── BOTANICAL — parchment, not black ── */
+.botanical-strip{
+  background:var(--parch3);
+  padding:5rem 8vw;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;align-items:center;
+  border-top:1px solid var(--borderl);
+  border-bottom:1px solid var(--borderl);
+}
+.bot-item{display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.bot-item img{
+  width:100%;max-width:190px;height:190px;object-fit:contain;
+  transition:transform 0.6s ease;
+  mix-blend-mode:multiply;
+}
+.bot-item:hover img{transform:scale(1.05) translateY(-5px);}
+.bot-label{
+  font-family:'Cinzel',serif;font-size:0.54rem;
+  letter-spacing:0.2em;color:var(--golddim);text-align:center;
+}
+
+/* ── PRODUCT ── */
+#product{
+  background:var(--parch);padding:5rem 8vw;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:7vw;align-items:center;
+  border-top:1px solid var(--borderl);
+}
+.product-body{
+  font-size:1.07rem;color:var(--textlt);line-height:1.85;max-width:520px;
+}
+.product-bullets{
+  margin-top:2rem;list-style:none;display:flex;flex-direction:column;gap:0.9rem;max-width:520px;
+}
+.product-bullets li{
+  display:flex;align-items:flex-start;gap:1rem;
+  font-size:1.03rem;color:var(--textlt);line-height:1.6;
+}
+.product-bullets li::before{
+  content:'——';color:var(--gold);font-size:0.75rem;
+  flex-shrink:0;margin-top:0.35rem;letter-spacing:-2px;
+}
+.product-img{position:relative;}
+.product-img img{
+  width:100%;object-fit:contain;
+  filter:sepia(5%) contrast(1.05);
+  border:1px solid var(--border);
+}
+.img-caption{
+  position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);
+  background:var(--parch);border:1px solid var(--border);
+  font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;
+  color:var(--golddim);padding:0.45rem 1.1rem;white-space:nowrap;
+}
+
+/* ── FOR WHOM — cinematic three panels ── */
+#for-whom{
+  background:var(--ink);
+  padding:0;
+}
+.fw-header{
+  padding:6rem 8vw 3.5rem;
+  background:var(--ink);
+}
+.fw-header .section-tag{ color:var(--gold); }
+.fw-header .section-tag::before{ background:var(--gold); }
+.fw-header .display{ color:var(--parch); }
+.fw-header .display em{ color:var(--goldlt); }
+.fw-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+.fw-panel{
+  position:relative;
+  height:72vh;min-height:500px;
+  overflow:hidden;cursor:default;
+}
+.fw-panel img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  filter:brightness(0.72) saturate(0.85);
+  transition:transform 0.8s ease;
+}
+.fw-panel:hover img{ transform:scale(1.04); }
+.fw-panel-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(10,9,6,0.95) 0%,
+    rgba(10,9,6,0.45) 45%,
+    rgba(10,9,6,0.05) 100%
+  );
+}
+.fw-panel-copy{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:2.2rem 2rem;
+  z-index:2;
+}
+.fw-panel-num{
+  font-family:'Cinzel',serif;font-size:0.58rem;
+  letter-spacing:0.18em;color:var(--gold);
+  margin-bottom:0.7rem;
+}
+.fw-panel-text{
+  font-size:0.96rem;color:rgba(240,233,216,0.82);
+  line-height:1.68;
+}
+.fw-panel+.fw-panel{ border-left:1px solid rgba(196,165,88,0.1); }
+@media(max-width:960px){
+  .fw-grid{ grid-template-columns:1fr; }
+  .fw-panel{ height:70vw;min-height:360px; }
+  .fw-panel+.fw-panel{ border-left:none;border-top:1px solid rgba(196,165,88,0.1); }
+}
+@media(max-width:960px){
+  .fw-alt-row{grid-template-columns:1fr;}
+  .fw-alt-img{height:60vw;}
+}
+@media(max-width:960px){
+  .fw-alt-row{grid-template-columns:1fr;}
+  .fw-alt-img{height:60vw;}
+  
+}
+@media(max-width:960px){
+  
+  .fw-big-name{font-size:2.2rem;}
+}
+
+
+
+
+
+
+.fw-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(26,22,16,0.95) 0%,rgba(26,22,16,0.4) 45%,rgba(26,22,16,0.05) 100%);
+}
+.fw-copy{position:absolute;bottom:0;left:0;right:0;padding:2.4rem 2.2rem;z-index:2;}
+.fw-num{
+  font-family:'Cinzel',serif;font-size:0.56rem;
+  letter-spacing:0.22em;color:var(--gold);margin-bottom:0.4rem;
+}
+.fw-title{
+  font-family:'Cinzel',serif;font-size:0.65rem;
+  letter-spacing:0.16em;color:rgba(240,233,216,0.65);margin-bottom:0.8rem;
+}
+.fw-text{font-size:0.96rem;color:rgba(240,233,216,0.82);line-height:1.7;}
+
+
+/* ── SA — parchment, not dark ── */
+#authenticate{
+  background:var(--parch);padding:5rem 8vw;
+  border-top:1px solid var(--borderl);
+}
+.sa-intro{max-width:700px;}
+.sa-intro-body{
+  font-size:1.07rem;color:var(--textlt);line-height:1.85;
+}
+.sa-intro-body+.sa-intro-body{margin-top:1rem;}
+.sa-pillars{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1.5rem;margin-top:3.5rem;
+}
+.sa-pillar{
+  border:1px solid var(--border);padding:2rem 2rem 2.2rem;
+  background:var(--ivory);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.sa-pillar:hover{
+  border-color:var(--gold);
+  box-shadow:0 8px 32px rgba(138,112,64,0.1);
+}
+.sa-roman{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-style:italic;
+  color:var(--golddim);line-height:1;margin-bottom:0.6rem;
+}
+.sa-pillar-title{
+  font-family:'Cinzel',serif;font-size:0.62rem;
+  letter-spacing:0.18em;color:var(--text);margin-bottom:0.7rem;
+}
+.sa-pillar-body{font-size:1rem;color:var(--textmd);line-height:1.65;}
+.sa-cta{margin-top:3rem;}
+.sa-link-dark{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;
+  color:var(--parch);background:var(--ink);
+  padding:0.8rem 1.8rem;text-decoration:none;transition:background 0.3s;
+}
+.sa-link-dark:hover{background:var(--golddim);}
+
+/* ── CRAFT ── */
+#craft{
+  background:var(--parch2);padding:5rem 8vw;
+  display:grid;grid-template-columns:1.2fr 1fr;
+  gap:6vw;align-items:center;
+  border-top:1px solid var(--borderl);
+}
+.craft-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.7rem,2.5vw,2.4rem);
+  font-style:italic;font-weight:300;
+  color:var(--ink);line-height:1.42;margin-top:0.8rem;
+}
+.craft-body{
+  font-size:1.04rem;color:var(--textmd);line-height:1.85;max-width:500px;
+}
+.craft-body+.craft-body{margin-top:1rem;}
+.craft-img-wrap{position:relative;display:flex;justify-content:center;}
+.craft-img-wrap img{
+  width:100%;max-width:380px;object-fit:contain;
+  filter:drop-shadow(0 6px 28px rgba(0,0,0,0.15));
+}
+.craft-img-label{
+  position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);
+  background:var(--parch2);border:1px solid var(--border);
+  font-family:'Cinzel',serif;font-size:0.54rem;letter-spacing:0.18em;
+  color:var(--golddim);padding:0.42rem 1rem;white-space:nowrap;
+}
+
+/* ── SHIP — full background image, text overlaid ── */
+#journey{
+  position:relative;
+  height:auto;min-height:520px;
+  overflow:hidden;
+  display:flex;align-items:center;
+  background:#2a1f0e;
+}
+.ship-bg{
+  position:absolute;inset:0;
+  background-color:#2a1f0e;
+  background:url('/images/home/img-0.png') center center/cover no-repeat;
+}
+.ship-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to right,
+    rgba(12,11,8,0.72) 0%,
+    rgba(12,11,8,0.42) 30%,
+    rgba(12,11,8,0.12) 60%,
+    rgba(12,11,8,0) 100%
+  );
+}
+@media(max-width:768px){
+  .ship-overlay{background:linear-gradient(to bottom,rgba(12,11,8,0.55) 0%,rgba(12,11,8,0.35) 50%,rgba(12,11,8,0.85) 100%);}
+}
+.ship-content{
+  position:relative;z-index:2;
+  padding:0 8vw;width:100%;
+  max-width:660px;
+}
+.ship-headline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,4.5vw,4.2rem);
+  font-weight:300;font-style:italic;
+  color:var(--parch);line-height:1.12;margin-top:0.5rem;
+}
+.ship-sub{
+  font-size:1.05rem;color:rgba(240,233,216,0.65);
+  max-width:480px;margin-top:1.2rem;line-height:1.75;
+}
+
+/* ── ORIGIN QUOTE — warm parchment3, not black ── */
+#origin{
+  background:var(--parch3);padding:5rem 8vw;text-align:center;
+  border-top:1px solid var(--borderl);
+  border-bottom:1px solid var(--borderl);
+}
+.origin-mark{
+  font-family:'Cormorant Garamond',serif;font-size:4.5rem;line-height:0.5;
+  color:var(--gold);margin-bottom:2rem;display:block;opacity:0.4;
+}
+.origin-quote-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.12rem,1.9vw,1.55rem);
+  font-style:italic;font-weight:300;
+  color:var(--textlt);
+  max-width:740px;margin:0 auto;line-height:1.78;
+}
+.origin-attr{margin-top:2.5rem;}
+.origin-attr strong{
+  display:block;font-family:'Cinzel',serif;font-size:0.62rem;
+  letter-spacing:0.22em;color:var(--golddim);
+}
+.origin-attr span{
+  display:block;margin-top:0.5rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.97rem;font-style:italic;color:var(--muted);
+}
+
+/* ── FAQ ── */
+#faq{
+  background:var(--parch);padding:5rem 8vw;
+  display:grid;grid-template-columns:1fr 1.6fr;
+  gap:8vw;align-items:start;
+  border-top:1px solid var(--borderl);
+}
+.faq-left img{
+  width:100%;max-width:340px;object-fit:contain;
+  margin-top:2.5rem;filter:sepia(5%);
+}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden;}
+.faq-q{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;padding:1.5rem 0;cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.14rem;color:var(--text);
+  line-height:1.4;user-select:none;transition:color 0.3s;
+}
+.faq-q:hover{color:var(--golddim);}
+.faq-q::after{
+  content:'+';font-family:'Cinzel',serif;font-size:1.1rem;
+  color:var(--gold);flex-shrink:0;margin-top:2px;transition:transform 0.3s;
+}
+.faq-item.open .faq-q::after{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.5s ease;}
+.faq-item.open .faq-a{max-height:320px;}
+.faq-a p{padding-bottom:1.5rem;font-size:1.02rem;color:var(--textlt);line-height:1.82;}
+
+/* ── CONTACT — balanced two-column ── */
+#contact{
+  background:var(--ivory);padding:5rem 8vw;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6vw;align-items:start;
+  border-top:1px solid var(--borderl);
+}
+.contact-headline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.9rem,3.2vw,3rem);
+  font-weight:300;line-height:1.18;color:var(--ink);
+  margin-top:1.2rem;
+}
+.contact-headline em{font-style:italic;color:var(--golddim);}
+.contact-intro{
+  font-size:1.04rem;color:var(--textmd);line-height:1.82;margin-top:1.3rem;
+}
+.contact-intro+.contact-intro{margin-top:0.8rem;}
+/* form side */
+.contact-right{display:flex;flex-direction:column;gap:0;}
+.form-group{margin-bottom:1.8rem;}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;
+  background:rgba(255,255,255,0.5);
+  border:1px solid var(--border);
+  padding:0.85rem 1rem;
+  font-family:'Crimson Pro',serif;font-size:1.05rem;
+  color:var(--text);outline:none;
+  transition:border-color 0.3s,background 0.3s;resize:none;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder{color:var(--muted);}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+  border-color:var(--golddim);background:rgba(255,255,255,0.85);
+}
+.form-group select option{background:var(--parch);color:var(--text);}
+.form-submit{
+  margin-top:0.4rem;width:100%;
+  font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;
+  background:var(--ink);color:var(--parch);
+  border:none;padding:1rem 2rem;cursor:pointer;transition:all 0.3s;
+}
+.form-submit:hover{background:var(--golddim);}
+/* portrait below form — balanced */
+.contact-portrait-below{
+  margin-top:2.5rem;
+}
+.contact-portrait-below img{
+  width:100%;
+  object-fit:cover;
+  border:1px solid var(--border);
+  filter:sepia(8%) contrast(1.02);
+  max-height:460px;
+  object-position:top center;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink2);padding:4rem 8vw 2.5rem;
+  border-top:1px solid var(--borderl);
+}
+.footer-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:3rem;flex-wrap:wrap;margin-bottom:3rem;
+}
+.footer-brand img{height:34px;opacity:0.65;margin-bottom:0.8rem;}
+.footer-brand p{
+  font-family:'Cinzel',serif;font-size:0.55rem;
+  letter-spacing:0.18em;color:rgba(240,233,216,0.85);
+}
+.footer-nav h4{
+  font-family:'Cinzel',serif;font-size:0.57rem;
+  letter-spacing:0.18em;color:var(--gold);margin-bottom:1rem;
+}
+.footer-nav ul{list-style:none;display:flex;flex-direction:column;gap:0.55rem;}
+.footer-nav a{
+  font-size:0.92rem;color:rgba(240,233,216,0.78);
+  text-decoration:none;transition:color 0.3s;
+}
+.footer-nav a:hover{color:var(--parch);}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+  padding-top:2rem;border-top:1px solid rgba(138,112,64,0.1);
+}
+.footer-copy{font-size:0.85rem;color:rgba(240,233,216,0.7);}
+.footer-tm{
+  font-family:'Cinzel',serif;font-size:0.55rem;
+  letter-spacing:0.2em;color:var(--goldlt);
+}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity 0.9s ease,transform 0.9s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}
+.d3{transition-delay:0.3s}.d4{transition-delay:0.4s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;height:auto;}
+  .hero-left{padding:7rem 8vw 3rem;}
+  .hero-left::after{display:none;}
+  .hero-right{height:65vw;}
+  #about{grid-template-columns:1fr;padding:6rem 8vw;}
+  .portrait-frame img{width:100%;max-width:100%;}
+  #product{grid-template-columns:1fr;}
+  
+  
+  #authenticate{padding:6rem 8vw;}
+  .sa-pillars{grid-template-columns:1fr;}
+  #craft{grid-template-columns:1fr;}
+  .craft-img-wrap{display:none;}
+  #faq{grid-template-columns:1fr;}
+  #contact{grid-template-columns:1fr;}
+  .botanical-strip{padding:3rem 8vw;gap:1.5rem;}
+  .nav-links{display:none;}
+  .footer-top{flex-direction:column;}
+}
+
+.contact-portrait-right{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:4rem 2rem;
+}
+.contact-portrait-right img{
+  width:55%;
+  max-width:200px;
+  height:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 8px 24px rgba(138,112,64,0.14));
+}
+
+.contact-details{
+  margin-top:2.5rem;
+  display:flex;flex-direction:column;gap:1rem;
+  padding-top:2rem;border-top:1px solid var(--border);
+}
+.contact-detail-item{
+  display:flex;align-items:baseline;gap:1.2rem;
+}
+.contact-detail-label{
+  font-family:'Cinzel',serif;font-size:0.57rem;
+  letter-spacing:0.2em;color:var(--golddim);
+  flex-shrink:0;width:3.5rem;
+}
+.contact-detail-item a{
+  font-size:1rem;color:var(--textmd);
+  text-decoration:none;transition:color 0.3s;
+}
+.contact-detail-item a:hover{color:var(--golddim);}
+
+.sa-logo-wrap{
+  margin:2rem 0 0.5rem;
+}
+.sa-logo-wrap img{
+  height:150px;
+  width:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 16px rgba(138,112,64,0.2));
+}
+
+
+
+/* ── FOR WHOM ── */
+#for-whom{ background:var(--parch); border-top:1px solid var(--borderl); }
+.fw-header{ padding:5rem 8vw 3rem; }
+.fw-alt-row{ display:grid; border-top:1px solid var(--borderl); }
+.fw-alt-row.row-1{ grid-template-columns:1fr 3fr; min-height:48vh; }
+.fw-alt-row.row-2{ grid-template-columns:2fr 1fr; min-height:48vh; }
+.fw-alt-row.row-3{ grid-template-columns:1fr 2fr; min-height:48vh; }
+.fw-alt-img{ position:relative; overflow:hidden; }
+.fw-alt-img img{ width:100%; height:100%; object-fit:cover; object-position:top center; filter:sepia(5%) contrast(1.04); transition:transform 0.8s; }
+.fw-alt-row:hover .fw-alt-img img{ transform:scale(1.03); }
+.fw-alt-num{ position:absolute; top:1.5rem; left:1.5rem; font-family:"Cinzel",serif; font-size:0.57rem; letter-spacing:0.22em; color:rgba(240,233,216,0.85); background:rgba(26,22,16,0.35); padding:0.28rem 0.6rem; }
+.fw-alt-text{ display:flex; flex-direction:column; justify-content:center; padding:5rem 8vw; background:var(--parch); }
+.fw-alt-row.row-2 .fw-alt-text{ background:var(--parch2); }
+.fw-alt-label{ font-family:"Cinzel",serif; font-size:0.6rem; letter-spacing:0.2em; color:var(--golddim); margin-bottom:1.3rem; }
+.fw-alt-name{ font-family:"Cormorant Garamond",serif; font-size:clamp(1.8rem,3vw,3rem); font-weight:300; line-height:1.15; color:var(--ink); margin-bottom:1.5rem; }
+.fw-alt-name em{ font-style:italic; color:var(--golddim); display:block; }
+.fw-alt-body{ font-size:1.04rem; color:var(--textmd); line-height:1.78; max-width:400px; }
+.fw-alt-rule{ width:2.5rem; height:1px; background:var(--gold); margin-top:2rem; }
+@media(max-width:960px){
+  .fw-alt-row.row-1,.fw-alt-row.row-2,.fw-alt-row.row-3{ grid-template-columns:1fr; }
+  .fw-alt-img{ height:60vw; }
+}
+</style>
+
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#home" class="nav-logo"><img src="/images/home/img-1.png" alt="The Merchant"></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#product">Our Product</a></li>
+    <li><a href="#for-whom">For Whom</a></li>
+    <li><a href="#authenticate">Serendib Authenticate</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">ENQUIRE</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-eyebrow">A HERITAGE TRADING HOUSE</div>
+    <h1 class="hero-headline">Quality is an<br><em>Intelligent Effort</em></h1>
+    <p class="hero-sub">Where craftsmanship is elevated, heritage is honored, and every detail is shaped with intention.</p>
+    <div class="hero-btns">
+      <a href="#product" class="btn-dark">DISCOVER THE PRODUCT</a>
+      <a href="#contact" class="btn-ghost">WHOLESALE ENQUIRY</a>
+    </div>
+    <div class="hero-scroll">SCROLL TO EXPLORE</div>
+  </div>
+  <div class="hero-right">
+    <img src="/images/home/img-2.jpg" alt="The Merchant">
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="portrait-frame reveal">
+    <img src="/images/home/img-3.png" alt="The Merchant Portrait">
+    <div class="portrait-caption">THE MERCHANT &middot; EST. 2024</div>
+  </div>
+  <div class="about-text">
+    <div class="section-tag reveal">THE MERCHANT</div>
+    <h2 class="display reveal d1">Built on authenticity,<br><em>trust, and truth</em></h2>
+    <p class="about-body reveal d2">The Merchant stands as a distinguished trading house, where craftsmanship is elevated, heritage is honored, and every detail is shaped with intention. We are built on the pillars of authenticity, trust, and scientifically proven truth. Here, timeless identity is not created; it is earned.</p>
+    <div class="about-blockquote reveal d3">
+      <p>"We exist to preserve what is pure, to perfect what is true, and to remind the world that the highest form of luxury is authenticity itself."</p>
+      <cite>THE MERCHANT FOUNDERS</cite>
+    </div>
+    <p class="about-body reveal d4">Rooted in our principle that quality is an intelligent effort, The Merchant shapes every exchange with quiet precision and grace; guided by our signature <em>Serendib Authenticate</em>, ensuring every product and every partnership embodies the finest quality, without compromise.</p>
+  </div>
+</section>
+
+<!-- BOTANICAL STRIP -->
+<div class="botanical-strip">
+  <div class="bot-item reveal">
+    <img src="/images/home/img-4.png" alt="Cinnamon Flower">
+    <span class="bot-label">CINNAMOMUM VERUM &middot; FLOWER</span>
+  </div>
+  <div class="bot-item reveal d1">
+    <img src="/images/home/img-5.png" alt="Cinnamon Branch">
+    <span class="bot-label">CINNAMOMUM VERUM &middot; BRANCH</span>
+  </div>
+  <div class="bot-item reveal d2">
+    <img src="/images/home/img-6.png" alt="Cinnamon Leaf">
+    <span class="bot-label">CINNAMOMUM VERUM &middot; LEAF</span>
+  </div>
+</div>
+
+<!-- OUR PRODUCT -->
+<section id="product">
+  <div class="product-text">
+    <div class="section-tag reveal">THE FIRST PROOF OF THE PROMISE</div>
+    <h2 class="display reveal d1">The Ceylon<br><em>Cinnamon.</em></h2>
+    <p class="product-body reveal d2">We chose Ceylon Cinnamon to introduce The Merchant to the world because it holds every element we revere: purity, heritage, artistry, and truth. It is the highest expression of cinnamon — the most authentic, naturally gentle, and scientifically regarded as the finest in its class.</p>
+    <ul class="product-bullets reveal d3">
+      <li>Harvested, peeled, and rolled entirely by hand by generational artisans</li>
+      <li>Scientifically validated as <em>Cinnamomum verum</em> — TRUE Ceylon</li>
+      <li>Batch-verified through the Serendib Authenticate framework</li>
+      <li>Traceable from origin estate to delivery</li>
+   </ul>
+      <div class="sa-cta reveal d3">
+        <a href="/shop" class="sa-link-dark">Delve Deeper</a>
+      </div>
+    </div>
+  </div>
+  <div class="product-img reveal d2">
+    <img src="/images/home/img-7.png" alt="Ceylon Cinnamon Quills">
+    <div class="img-caption">CEYLON CINNAMON</div>
+  </div>
+</section>
+
+<!-- FOR WHOM -->
+<section id="for-whom">
+  <div class="fw-header reveal">
+    <div class="section-tag">FOR WHOM</div>
+    <h2 class="display reveal d1">Those who understand<br><em>the difference</em></h2>
+  </div>
+  <div class="fw-grid">
+    <div class="fw-panel reveal">
+      <img src="/images/home/img-8.png" alt="woman-home-artisan">
+      <div class="fw-panel-overlay"></div>
+      <div class="fw-panel-copy">
+        <div class="fw-panel-num">01. THE CULINARY PROFESSIONAL</div>
+        <p class="fw-panel-text">For individuals who value mastery over mass, truth over claim, and craftsmanship over convenience.</p>
+      </div>
+    </div>
+    <div class="fw-panel reveal d1">
+      <img src="/images/home/img-9.png" alt="chef-culinary-professional">
+      <div class="fw-panel-overlay"></div>
+      <div class="fw-panel-copy">
+        <div class="fw-panel-num">02. THE HOME ARTISAN</div>
+        <p class="fw-panel-text">For those who understand that the finest things in life are shaped slowly, intentionally, and with reverence.</p>
+      </div>
+    </div>
+    <div class="fw-panel reveal d2">
+      <img src="/images/home/img-10.png" alt="truck-supplement-manufacturer">
+      <div class="fw-panel-overlay"></div>
+      <div class="fw-panel-copy">
+        <div class="fw-panel-num">03. THE SUPPLEMENT MANUFACTURER</div>
+        <p class="fw-panel-text">For those who select ingredients with purity at the forefront and believe quality must begin at its truest source.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SA 4-PILLAR -->
+<section id="authenticate">
+  <div class="sa-intro">
+    <div class="section-tag reveal">OUR STANDARD OF TRUTH</div>
+    <h2 class="display reveal d1">Serendib<br><em>Authenticate&#8482;</em></h2>
+    <div class="sa-logo-wrap reveal d2">
+      <img src="/images/home/img-11.png" alt="Serendib Authenticate">
+    </div>
+    <p class="sa-intro-body reveal d2">The modern spice trade has made it too easy to blur lines — mixing origins, stretching labels, and selling "Ceylon" in name only. For The Merchant, quality without proof is unfinished work.</p>
+    <p class="sa-intro-body reveal d3">We created Serendib Authenticate to replace "trust us" with traceable, scientifically supported assurance. Four disciplines. One uncompromising standard.</p>
+  </div>
+  <div class="sa-pillars reveal d2">
+    <div class="sa-pillar">
+      <div class="sa-roman">I</div>
+      <div class="sa-pillar-title">PROVENANCE</div>
+      <p class="sa-pillar-body">Verified origin — you know exactly where it comes from.</p>
+    </div>
+    <div class="sa-pillar">
+      <div class="sa-roman">II</div>
+      <div class="sa-pillar-title">PURITY</div>
+      <p class="sa-pillar-body">Scientific validation of <em>Cinnamomum verum</em> — no assumptions.</p>
+    </div>
+    <div class="sa-pillar">
+      <div class="sa-roman">III</div>
+      <div class="sa-pillar-title">PROCESS INTEGRITY</div>
+      <p class="sa-pillar-body">Craftsmanship and quality controls — how it was handled and protected.</p>
+    </div>
+    <div class="sa-pillar">
+      <div class="sa-roman">IV</div>
+      <div class="sa-pillar-title">PROOF DISPLAY</div>
+      <p class="sa-pillar-body">Traceable badge numbers — you own the story of every batch.</p>
+    </div>
+  </div>
+  <div class="sa-cta reveal d3">
+    <a href="/authenticate" class="sa-link-dark">SERENDIB AUTHENTICATE PORTAL</a>
+  </div>
+</section>
+
+<!-- CRAFT -->
+<section id="craft">
+  <div class="craft-text">
+    <div class="section-tag reveal">THE CRAFT</div>
+    <blockquote class="craft-quote reveal d1">Every quill shaped<br>by <em style="color:var(--golddim);">human mastery.</em></blockquote>
+    <p class="craft-body reveal d2">Harvested by touch. Peeled by skill. Rolled by instinct. These are not tasks a machine can replicate — they are the work of artisans whose mastery has been inherited through generations. When a craft is lived, not manufactured, it carries its own worth.</p>
+    <p class="craft-body reveal d3">Ceylon Cinnamon of this grade cannot be mass-produced. Each harvest is constrained by the hands that shape it, the land that yields it, and the standards we refuse to compromise.</p>
+    <a href="#contact" class="btn-outline-gold reveal d3" style="margin-top:1.8rem;">INQUIRE ABOUT ALLOCATION</a>
+  </div>
+  <div class="craft-img-wrap reveal d2">
+    <img src="/images/home/img-12.png" alt="Hand-Rolled Ceylon Cinnamon Quills">
+    <div class="craft-img-label">HAND-ROLLED QUILLS</div>
+  </div>
+</section>
+
+<!-- SHIP — full background, text overlaid -->
+<section id="journey">
+  <div class="ship-bg"></div>
+  <div class="ship-overlay"></div>
+  <div class="ship-content">
+    <div class="section-tag-light">THE JOURNEY</div>
+    <h2 class="ship-headline">From the island of Ceylon<br>to those who seek the finest</h2>
+    <p class="ship-sub">Across oceans and centuries, the tradition of Ceylon Cinnamon endures. The Merchant carries that heritage forward; with science, craft, and an unwavering standard of truth.</p>
+  </div>
+</section>
+
+<!-- ORIGIN QUOTE — warm parchment -->
+<section id="origin">
+  <span class="origin-mark">&ldquo;</span>
+  <p class="origin-quote-text reveal">"We commend The Merchant for your unwavering commitment to authenticity, provenance, and craftsmanship. By upholding the true identity of Ceylon Cinnamon, you help preserve a product that is not only a hallmark of Sri Lanka's cultural and agricultural heritage but also a globally celebrated symbol of purity and distinction."</p>
+  <div class="origin-attr reveal d1">
+    <strong>THE TRUST FROM THE ORIGIN</strong>
+    <span>Sri Lanka; Land of Ceylon Cinnamon</span>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-left">
+    <div class="section-tag reveal">FAQ</div>
+    <h2 class="display reveal d1">Questions worth <em>asking</em></h2>
+    <div class="reveal d2"><img src="/images/home/img-13.png" alt="Ceylon Cinnamon Grades"></div>
+  </div>
+  <div class="faq-items reveal d1">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is Serendib Authenticate?</div>
+      <div class="faq-a"><p>Serendib Authenticate is The Merchant's proprietary four-pillar verification framework, designed to give buyers complete confidence in what they're purchasing. It is how we hold ourselves and our supply chain accountable.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How is Ceylon cinnamon different from cassia?</div>
+      <div class="faq-a"><p>Ceylon cinnamon has a finer, more complex flavour; lighter, warmer, and slightly citrusy, without the harsh bite of cassia. Structurally, Ceylon forms thin, papery quills with multiple layers; cassia is a single, thick bark roll. Chemically, Ceylon contains trace levels of coumarin, while cassia contains significantly higher levels; a concern for anyone consuming cinnamon in meaningful quantities, particularly in supplements, beverages, or daily cooking.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Where does The Merchant's cinnamon come from?</div>
+      <div class="faq-a"><p>Our cinnamon is sourced directly from heritage-growing regions in Sri Lanka. We trace each batch to its origin and maintain documentation of provenance as part of our Serendib Authenticate verification process.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is your pricing structure for wholesale buyers?</div>
+      <div class="faq-a"><p>Wholesale partnerships at The Merchant are built on transparency and shared standards. We work directly with buyers to structure pricing, volume tiers, and terms that reflect the nature of the relationship. We'd welcome the conversation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-left reveal">
+    <div class="section-tag">SELECTIVE ALLOCATION</div>
+    <h2 class="contact-headline">Our batches are finite.<br>Our partnerships, <em>selective.</em></h2>
+    <p class="contact-intro">Ceylon Cinnamon of this grade cannot be mass-produced. Each harvest is constrained by the hands that shape it, the land that yields it, and the standards we refuse to compromise.</p>
+    <p class="contact-intro">Allocation is determined by harvest yield and existing commitments. We encourage early inquiry.</p>
+    <div class="contact-details">
+      <div class="contact-detail-item">
+        <span class="contact-detail-label">EMAIL</span>
+        <a href="mailto:contact@the-merchant.us">contact@the-merchant.us</a>
+      </div>
+      <div class="contact-detail-item">
+        <span class="contact-detail-label">WEB</span>
+        <a href="/">the-merchant.us</a>
+      </div>
+    </div>
+  </div>
+  <div class="contact-right reveal d1">
+     <form action="https://formspree.io/f/xlgpnojv" method="POST">
+      <div class="form-group"><input type="text" name="name" placeholder="Your Name" required></div>
+      <div class="form-group"><input type="email" name="email" placeholder="Email Address" required></div>
+      <div class="form-group"><input type="text" name="company" placeholder="Company / Organization (optional)"></div>
+      <div class="form-group">
+        <select name="inquiry-type">
+          <option value="">Nature of your inquiry</option>
+          <option>Premium Hospitality (Michelin-Level, Fine Dining & Private Chef) Inquiries</option>
+          <option>Supplement Pharamaceutical Sourcing</option>
+          <option>Retail Partnership</option>
+          <option>Wholesale Inquiry</option>
+          <option>Serendib Authenticate</option>
+           <option>General Inquiry</option>
+        </select>
+      </div>
+      <div class="form-group"><textarea name="message" rows="6" placeholder="Tell us about your interest..."></textarea></div>
+      <button type="submit" class="form-submit">SUBMIT INQUIRY</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="/images/home/img-14.png" alt="The Merchant">
+      <p> THE MERCHANT &middot; A HERITAGE TRADING HOUSE</p>
+    </div>
+    <div class="footer-nav">
+      <h4>PAGES</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="/shop">Ceylon Cinnamon</a></li>
+        <li><a href="/authenticate">Serendib Authenticate</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-nav">
+      <h4>CONTACT</h4>
+      <ul>
+        <li><a href="mailto:contact@the-merchant.us">contact@the-merchant.us</a></li>
+        <li><a href="/" target="_blank">the-merchant.us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; 2024 The Merchant. All Rights Reserved.</p>
+    <span class="footer-tm">SERENDIB AUTHENTICATE&trade;</span>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, {threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+document.querySelector('.form-submit').addEventListener('click', function(){
+  this.textContent = 'INQUIRY SENT';
+  this.style.background = 'var(--golddim)';
+  setTimeout(() => { this.textContent = 'SUBMIT INQUIRY'; this.style.background = ''; }, 3000);
+});
+</script>

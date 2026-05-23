@@ -1,0 +1,473 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --parch:   #f0e9d8;
+    --parch2:  #e8dfc8;
+    --parch3:  #dfd4b8;
+    --ink:     #1c1810;
+    --ink2:    #2e2818;
+    --gold:    #8a6520;
+    --goldlt:  #b08830;
+    --muted:   #7a6e58;
+    --border:  rgba(138,101,32,0.25);
+    --warm:    #ece3d0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--parch);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 6vw;
+    transition: background 0.4s, border-color 0.4s;
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled {
+    background: rgba(240,233,216,0.97);
+    border-color: var(--border);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo {
+    font-family: 'Cinzel', serif; font-size: 1rem;
+    letter-spacing: 0.26em; color: var(--ink); text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Cinzel', serif; font-size: 0.6rem;
+    letter-spacing: 0.22em; color: var(--ink2);
+    text-decoration: none; opacity: 0.65;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--gold); }
+  section { padding: 8rem 8vw; }
+  .warm { background: var(--warm); }
+  .mid  { background: var(--parch3); }
+  .section-tag {
+    font-family: 'Cinzel', serif; font-size: 0.57rem;
+    letter-spacing: 0.35em; color: var(--gold);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2.2rem;
+  }
+  .section-tag::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+  .section-tag.center { justify-content: center; }
+  .section-tag.center::before { display: none; }
+  .section-tag.center::after { content: ''; width: 28px; height: 1px; background: var(--gold); }
+  h2.display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.1rem, 3.8vw, 3.5rem);
+    font-weight: 300; line-height: 1.12; margin-bottom: 2rem; color: var(--ink);
+  }
+  h2.display em { font-style: italic; color: var(--goldlt); }
+  .body {
+    font-size: 1.08rem; line-height: 1.88; color: var(--ink2); max-width: 580px;
+  }
+  .cta-link {
+    display: inline-flex; align-items: center; gap: 0.9rem;
+    font-family: 'Cinzel', serif; font-size: 0.6rem;
+    letter-spacing: 0.28em; color: var(--gold);
+    text-decoration: none; border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem; transition: color 0.2s, border-color 0.2s;
+  }
+  .cta-link:hover { color: var(--goldlt); border-color: var(--gold); }
+  .cta-link::after { content: '→'; font-size: 0.85rem; }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 5rem 8vw 3rem; background: var(--parch3);
+  }
+  .footer-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding-bottom: 3rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem;
+  }
+  .footer-brand span:first-child {
+    display: block; font-family: 'Cinzel', serif;
+    font-size: 1.15rem; letter-spacing: 0.28em; color: var(--ink); margin-bottom: 0.4rem;
+  }
+  .footer-brand .sub {
+    font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.3em; color: var(--gold);
+  }
+  .footer-links { display: flex; gap: 2.5rem; align-items: center; }
+  .footer-links a {
+    font-family: 'Cinzel', serif; font-size: 0.57rem;
+    letter-spacing: 0.2em; color: var(--muted); text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em; }
+  .footer-tm {
+    font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.25em; color: var(--gold); opacity: 0.7;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.95s ease, transform 0.95s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .d1 { transition-delay: 0.15s; }
+  .d2 { transition-delay: 0.30s; }
+  @media (max-width: 900px) {
+    .footer-top { flex-direction: column; gap: 2rem; }
+    .footer-links { flex-wrap: wrap; gap: 1.5rem; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 600px) { section { padding: 5rem 6vw; } }
+.nav-cta {
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 0.45rem 1.2rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--parch);
+}
+  /* PAGE HERO */
+  .page-hero {
+    position: relative; min-height: 88vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; overflow: hidden; background: var(--parch2);
+  }
+  .page-hero-left {
+    position: relative; z-index: 2;
+    padding: 14vh 5vw 10vh 8vw;
+    animation: fadeUp 1.1s ease both;
+  }
+  .page-eyebrow {
+    font-family: 'Cinzel', serif; font-size: 0.58rem;
+    letter-spacing: 0.35em; color: var(--gold);
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem;
+  }
+  .page-eyebrow::before { content: ''; width: 36px; height: 1px; background: var(--gold); }
+  .page-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    font-weight: 300; line-height: 1.08; margin-bottom: 1.8rem; color: var(--ink);
+  }
+  .page-hero h1 em { font-style: italic; color: var(--goldlt); }
+  .page-hero-desc {
+    font-size: 1.08rem; color: var(--ink2); opacity: 0.78;
+    line-height: 1.85; max-width: 460px; margin-bottom: 2.5rem;
+  }
+  .page-hero-right { position: relative; height: 88vh; overflow: hidden; }
+  .page-hero-right img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    filter: brightness(0.9) saturate(0.88) sepia(0.1);
+    mix-blend-mode: multiply;
+  }
+  .page-hero-right::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to right, var(--parch2) 0%, transparent 40%),
+                linear-gradient(to top, var(--parch2) 0%, transparent 20%);
+  }
+
+  /* GRADES */
+  .grades-intro {
+    text-align: center; max-width: 700px; margin: 0 auto 5rem;
+  }
+  .grades-intro p {
+    font-size: 1.1rem; line-height: 1.88; color: var(--ink2); margin-top: 1rem;
+  }
+  .grades-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border); border: 1px solid var(--border);
+  }
+  .grade-card {
+    background: var(--parch); padding: 3rem 2.5rem;
+    position: relative; transition: background 0.3s;
+  }
+  .grade-card:hover { background: var(--warm); }
+  .grade-num {
+    font-family: 'Cinzel', serif; font-size: 0.52rem;
+    letter-spacing: 0.3em; color: var(--gold); opacity: 0.65;
+    margin-bottom: 1rem; display: block;
+  }
+  .grade-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300; color: var(--ink);
+    margin-bottom: 0.6rem; letter-spacing: 0.02em;
+  }
+  .grade-label {
+    font-family: 'Cinzel', serif; font-size: 0.52rem;
+    letter-spacing: 0.22em; color: var(--gold);
+    margin-bottom: 1.5rem; display: block;
+  }
+  .grade-desc { font-size: 1rem; line-height: 1.78; color: var(--ink2); opacity: 0.82; }
+
+  /* SPECTRUM DIVIDER */
+  .spectrum-strip {
+    height: 3px; margin: 0 -8vw;
+    background: linear-gradient(to right,
+      transparent 0%, var(--gold) 20%, var(--goldlt) 50%, var(--gold) 80%, transparent 100%);
+    opacity: 0.35;
+  }
+
+  /* MERITS */
+  .merits-header {
+    text-align: center; max-width: 640px; margin: 0 auto 5rem;
+  }
+  .merits-header p {
+    font-size: 1.05rem; color: var(--ink2); opacity: 0.75; line-height: 1.8; margin-top: 1rem;
+  }
+  .merits-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--border); border: 1px solid var(--border);
+  }
+  .merit-card {
+    background: var(--warm); padding: 2.8rem 2rem; transition: background 0.3s;
+  }
+  .merit-card:hover { background: var(--parch2); }
+  .merit-icon { width: 36px; height: 1px; background: var(--gold); margin-bottom: 1.8rem; }
+  .merit-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 400; color: var(--ink); line-height: 1.3; margin-bottom: 1rem;
+  }
+  .merit-desc { font-size: 0.95rem; line-height: 1.75; color: var(--ink2); opacity: 0.75; }
+
+  /* CLOSING */
+  .closing-banner {
+    position: relative; overflow: hidden;
+    padding: 8rem 8vw; background: var(--parch3);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 7vw; align-items: center;
+  }
+  .closing-banner::before {
+    content: ''; position: absolute; inset: 2.5rem;
+    border: 1px solid var(--border); pointer-events: none;
+  }
+  .closing-img { position: relative; z-index: 1; }
+  .closing-img img {
+    width: 100%; height: 55vh;
+    object-fit: contain; object-position: center;
+    display: block; opacity: 0.9;
+    filter: sepia(0.1);
+  }
+  .closing-text { position: relative; z-index: 1; }
+  .closing-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    font-style: italic; font-weight: 300;
+    line-height: 1.4; color: var(--ink); margin-bottom: 2rem;
+  }
+  .closing-attr {
+    font-family: 'Cinzel', serif; font-size: 0.57rem;
+    letter-spacing: 0.28em; color: var(--gold); display: block; margin-bottom: 3rem;
+  }
+
+  /* SA CALLOUT */
+  .sa-callout {
+    background: var(--ink); padding: 6rem 8vw;
+    display: flex; align-items: center; justify-content: space-between; gap: 4rem;
+    border-top: 1px solid var(--border);
+  }
+  .sa-callout-text h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+    font-weight: 300; line-height: 1.2; margin-bottom: 1rem; color: #f0e9d8;
+  }
+  .sa-callout-text h3 em { font-style: italic; color: #b08830; }
+  .sa-callout-text p {
+    font-size: 1rem; color: #e8dfc8; opacity: 0.72;
+    line-height: 1.78; max-width: 480px; margin-bottom: 2rem;
+  }
+  .sa-callout .cta-link { color: #b08830; border-color: rgba(138,101,32,0.35); }
+  .sa-callout .cta-link:hover { color: #d4a840; }
+  .sa-callout-logo {
+    flex-shrink: 0; width: 160px; height: 160px; object-fit: contain; opacity: 0.9;
+  }
+
+  @media (max-width: 1100px) { .merits-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px) {
+    .page-hero { grid-template-columns: 1fr; }
+    .page-hero-right { position: absolute; inset: 0; height: 100%; }
+    .page-hero-right::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: rgba(240,233,216,0.62);
+    }
+    .page-hero-left { position: relative; z-index: 2; }
+    .grades-grid { grid-template-columns: 1fr 1fr; }
+    .closing-banner { grid-template-columns: 1fr; }
+    .closing-img img { height: 50vw; }
+    .sa-callout { flex-direction: column; text-align: center; }
+    .sa-callout-text p { margin: 0 auto 2rem; }
+  }
+  @media (max-width: 600px) {
+    .grades-grid { grid-template-columns: 1fr; }
+    .merits-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+
+<nav id="nav">
+  <a href="/" class="nav-logo"><img src="/images/shop/img-0.jpg" alt="The Merchant" style="height:52px;mix-blend-mode:multiply;opacity:0.9;"></a>
+  <a href="/#contact" class="nav-cta">ENQUIRE</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-left">
+    <div class="page-eyebrow">CEYLON · SRI LANKA</div>
+    <h1>The <em>True</em><br>Cinnamon</h1>
+    <p class="page-hero-desc">Grown in the lush landscapes of Ceylon, true Ceylon cinnamon is a rare and revered spice. Unlike the widely available cassia variety, it offers a gentler, sweeter flavor and is naturally low in coumarin; making it the healthiest, most refined cinnamon in the world.</p>
+    <a href="#grades" class="cta-link">EXPLORE THE SPECTRUM</a>
+  </div>
+  <div class="page-hero-right">
+    <img src="/images/shop/img-1.png" alt="Ceylon Cinnamon Quills">
+  </div>
+</div>
+
+<section id="grades" class="warm">
+  <div class="grades-intro reveal">
+    <div class="section-tag center">THE SPECTRUM OF FINEST</div>
+    <h2 class="display">Six expressions of<br><em>a single truth</em></h2>
+    <p>Each grade of Ceylon Cinnamon tells a different story of texture, age, and purpose; yet all share the same heritage of purity and craft. From the feather-light Alba to the bold H grades, The Merchant stewards them all with the same uncompromising standard.</p>
+  </div>
+  <div class="grades-grid reveal">
+    <div class="grade-card">
+      <span class="grade-num">GRADE 01</span>
+      <div class="grade-name">Alba</div>
+      <span class="grade-label">THE RAREST · FINEST LUXURY</span>
+      <p class="grade-desc">Feather-light and pencil-thin, Alba quills are a symbol of luxury; smooth in texture, delicate in flavor, and visually exquisite. Reserved for fine dining, artisanal creations, and those who seek only the best.</p>
+    </div>
+    <div class="grade-card">
+      <span class="grade-num">GRADE 02</span>
+      <div class="grade-name">C5</div>
+      <span class="grade-label">ELEGANT · FRAGRANT</span>
+      <p class="grade-desc">Slightly fuller than Alba, yet still remarkably smooth and fragrant. These quills offer elegance with a little more body; ideal for premium culinary use and refined infusions.</p>
+    </div>
+    <div class="grade-card">
+      <span class="grade-num">GRADE 03</span>
+      <div class="grade-name">C4</div>
+      <span class="grade-label">BALANCED · VERSATILE</span>
+      <p class="grade-desc">A graceful balance between finesse and intensity. Slightly thicker bark with a deeper hue and warm, rounded flavor; perfect for both sweet and savory applications.</p>
+    </div>
+    <div class="grade-card">
+      <span class="grade-num">GRADE 04</span>
+      <div class="grade-name">M5 / M4</div>
+      <span class="grade-label">TEXTURED · ROBUST</span>
+      <p class="grade-desc">More textured and robust, these quills retain the gentle sweetness of true Ceylon cinnamon while offering a heartier bite. Ideal for teas, spice blends, and traditional recipes.</p>
+    </div>
+    <div class="grade-card">
+      <span class="grade-num">GRADE 05</span>
+      <div class="grade-name">H1 / H2</div>
+      <span class="grade-label">BOLD · EARTHY</span>
+      <p class="grade-desc">Harvested from more mature bark, these grades bring a bold, earthy presence. Less uniform in shape, but rich in depth; perfect for large-batch brewing or infusing warm complexity into slow-cooked dishes.</p>
+    </div>
+    <div class="grade-card">
+      <span class="grade-num">GRADE 06</span>
+      <div class="grade-name">Oil</div>
+      <span class="grade-label">ESSENTIAL · POTENT</span>
+      <p class="grade-desc">Extracted from the bark or leaves, Ceylon cinnamon oil is a potent essential oil prized for its warm, spicy fragrance. Rich in cinnamaldehyde, known for its antimicrobial, anti-inflammatory, and antioxidant qualities.</p>
+    </div>
+  </div>
+</section>
+
+<div class="spectrum-strip"></div>
+
+<section id="merits">
+  <div class="merits-header reveal">
+    <div class="section-tag center">THE MERITS</div>
+    <h2 class="display">Choosing the<br><em>True Cinnamon</em></h2>
+    <p>Centuries of traditional knowledge and modern science converge in Ceylon Cinnamon's extraordinary profile. Eight reasons why it stands apart.</p>
+  </div>
+  <div class="merits-grid reveal">
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">Awaken the Brilliance Within</div>
+      <p class="merit-desc">Linked to improved focus, memory, and brain health; supporting cognitive clarity from within.</p>
+    </div>
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">A Healthy Physique</div>
+      <p class="merit-desc">Boosts metabolism and naturally suppresses appetite, helping you stay on track with calorie and protein intake.</p>
+    </div>
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">Naturally Low in Coumarin</div>
+      <p class="merit-desc">Safer for long-term use compared to cassia cinnamon, which contains significantly higher levels of this compound.</p>
+    </div>
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">Sustaining Optimal Blood Sugar</div>
+      <p class="merit-desc">Mimics the effects of insulin, making it beneficial for blood sugar balance and metabolic health.</p>
+    </div>
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">Nourish the Heart's Rhythm</div>
+      <p class="merit-desc">Promotes healthy circulation and may help maintain balanced cholesterol levels for long-term cardiovascular wellness.</p>
+    </div>
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">Natural Anti-Inflammatory</div>
+      <p class="merit-desc">Helps reduce inflammation throughout the body, supporting comfort, recovery, and overall vitality.</p>
+    </div>
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">A Rich Reservoir of Antioxidants</div>
+      <p class="merit-desc">Supports cellular health and helps protect against oxidative stress; nature's quiet defense.</p>
+    </div>
+    <div class="merit-card">
+      <div class="merit-icon"></div>
+      <div class="merit-title">Nature's Antibacterial Power</div>
+      <p class="merit-desc">Contains antimicrobial properties that support immune defense, naturally and without compromise.</p>
+    </div>
+  </div>
+</section>
+
+<div class="closing-banner">
+  <div class="closing-img reveal">
+    <img src="/images/shop/img-2.png" alt="Cinnamomum verum">
+  </div>
+  <div class="closing-text reveal d1">
+    <p class="closing-quote">"Quality is never on accident; it is always the result of intelligent effort."</p>
+    <span class="closing-attr">THE MERCHANT</span>
+    <a href="/authenticate" class="cta-link">SERENDIB AUTHENTICATE</a>
+  </div>
+</div>
+
+<div class="sa-callout reveal">
+  <div class="sa-callout-text">
+    <h3>Every batch carries<br><em>a provable truth</em></h3>
+    <p>Serendib Authenticate ensures every grade of Ceylon Cinnamon you receive from The Merchant is verified, traceable, and scientifically confirmed; from origin to your hands.</p>
+    <a href="/authenticate" class="cta-link">EXPLORE THE STANDARD</a>
+  </div>
+  <img class="sa-callout-logo" src="/images/shop/img-3.png" alt="Serendib Authenticate">
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span>THE MERCHANT</span>
+      <span class="sub">A HERITAGE TRADING HOUSE · CEYLON CINNAMON</span>
+    </div>
+    
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2024 The Merchant. All Rights Reserved.</p>
+    <span class="footer-tm">SERENDIB AUTHENTICATE™</span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
