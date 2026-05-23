@@ -116,6 +116,43 @@ export function extractContent(html) {
 }
 
 /**
+ * Walk a fragment and drop stray `</div>` tokens that have no matching open.
+ *
+ * Why this is necessary: the original Netlify HTML happens to contain an
+ * extra `</div>` near the end of `<section id="product"><div class="product-text">…`.
+ * When the original served the file as the document body, the browser's
+ * HTML parser leniently ignored the unmatched closing tag. Once we inject
+ * the same content as innerHTML of a wrapper div, real-browser document
+ * parsing of the full Next.js page treats that stray `</div>` as closing
+ * the wrapper itself — and every element after it escapes upward, breaking
+ * the grid layouts. Balancing the tags here makes the output safe to inject.
+ */
+export function balanceDivs(html) {
+  const tokens = [];
+  for (const m of html.matchAll(/<div\b[^>]*>/gi)) {
+    tokens.push({ kind: 'open', start: m.index, end: m.index + m[0].length });
+  }
+  for (const m of html.matchAll(/<\/div\s*>/gi)) {
+    tokens.push({ kind: 'close', start: m.index, end: m.index + m[0].length });
+  }
+  tokens.sort((a, b) => a.start - b.start);
+
+  const drops = [];
+  let depth = 0;
+  for (const t of tokens) {
+    if (t.kind === 'open') depth++;
+    else if (depth === 0) drops.push(t);
+    else depth--;
+  }
+  if (drops.length === 0) return html;
+
+  drops.sort((a, b) => b.start - a.start);
+  let out = html;
+  for (const d of drops) out = out.slice(0, d.start) + out.slice(d.end);
+  return out;
+}
+
+/**
  * Inspect HTML for things that won't carry over cleanly:
  *  - <script> tags (dangerouslySetInnerHTML won't execute them)
  *  - Netlify Forms (data-netlify="true" — won't work on Vercel)
@@ -156,7 +193,8 @@ async function main() {
 
     const withImages = await extractBase64Images(html, route, baseDir);
     const withLinks = rewriteLinks(withImages);
-    const content = extractContent(withLinks);
+    const balanced = balanceDivs(withLinks);
+    const content = extractContent(balanced);
 
     const outPath = path.join(baseDir, 'content', `${route}.html`);
     await fs.writeFile(outPath, content);

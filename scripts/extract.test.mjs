@@ -8,7 +8,8 @@ import {
   extractBase64Images,
   rewriteLinks,
   extractContent,
-  detectRisks
+  detectRisks,
+  balanceDivs
 } from './extract.mjs';
 
 // Small valid 1x1 PNG (transparent), base64-encoded.
@@ -152,4 +153,41 @@ test('detectRisks: clean HTML produces no warnings', () => {
   const html = `<html><body><h1>hi</h1></body></html>`;
   const warnings = detectRisks(html, 'home');
   assert.equal(warnings.length, 0);
+});
+
+test('balanceDivs: passes well-formed HTML through unchanged', () => {
+  const html = `<div><div>a</div><div>b</div></div>`;
+  assert.equal(balanceDivs(html), html);
+});
+
+test('balanceDivs: drops a single stray </div>', () => {
+  const html = `<div>a</div></div>`;
+  assert.equal(balanceDivs(html), `<div>a</div>`);
+});
+
+test('balanceDivs: drops a stray </div> in the middle of well-formed structure', () => {
+  const html = `<div>before</div></div><div>after</div>`;
+  assert.equal(balanceDivs(html), `<div>before</div><div>after</div>`);
+});
+
+test('balanceDivs: matches a stray </div> inside a section like the real bug', () => {
+  // Mirrors the actual source: product-text has an extra </div> after its
+  // own close, before the sibling product-img.
+  const html = `<section><div class="a"><div class="b">x</div></div></div><div class="c">y</div></section>`;
+  const out = balanceDivs(html);
+  assert.equal(
+    out,
+    `<section><div class="a"><div class="b">x</div></div><div class="c">y</div></section>`
+  );
+});
+
+test('balanceDivs: handles </div > with whitespace before the bracket', () => {
+  const html = `<div>x</div ></div >`;
+  assert.equal(balanceDivs(html), `<div>x</div >`);
+});
+
+test('balanceDivs: leaves unmatched opens alone (does not invent closes)', () => {
+  // Open without close — we don't add a close, just don't drop anything.
+  const html = `<div>open<div>nested</div>`;
+  assert.equal(balanceDivs(html), html);
 });
