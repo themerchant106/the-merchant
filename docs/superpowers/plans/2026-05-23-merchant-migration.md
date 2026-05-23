@@ -825,83 +825,143 @@ git commit -m "feat: add shared layout with top nav"
 
 ---
 
-## Task 7: Build the three page components
+## Task 7: Build the three page components (with script extraction)
 
 **Files:**
+- Create: `/mnt/c/Users/tyaku/the-merchant/lib/page-content.ts`
 - Create: `/mnt/c/Users/tyaku/the-merchant/app/page.tsx`
 - Create: `/mnt/c/Users/tyaku/the-merchant/app/shop/page.tsx`
 - Create: `/mnt/c/Users/tyaku/the-merchant/app/authenticate/page.tsx`
 
-- [ ] **Step 7.1: Create app/page.tsx (home)**
+**Background:** Task 5 surfaced that all 3 pages have inline `<script>` tags (FAQ accordion, scroll-reveal IntersectionObserver, sticky-nav handler, form-submit button feedback). `dangerouslySetInnerHTML` does NOT execute scripts. To preserve interactivity, we strip `<script>` blocks out of the HTML at build time and re-add them via Next.js's `<Script>` component with `strategy="afterInteractive"`. User decision captured at Task 5.
 
-```tsx
+- [ ] **Step 7.1: Create lib/page-content.ts (shared helper)**
+
+```ts
 import fs from 'node:fs';
 import path from 'node:path';
+
+export type PageContent = {
+  html: string;
+  scripts: string[];
+};
+
+export function loadPageContent(file: string): PageContent {
+  const raw = fs.readFileSync(
+    path.join(process.cwd(), 'content', file),
+    'utf-8'
+  );
+  const scripts: string[] = [];
+  const html = raw.replace(
+    /<script\b[^>]*>([\s\S]*?)<\/script>/gi,
+    (_, body: string) => {
+      scripts.push(body);
+      return '';
+    }
+  );
+  return { html, scripts };
+}
+```
+
+This runs at build time (Next.js static export pre-renders pages) so file reads execute on the build machine, not the browser.
+
+- [ ] **Step 7.2: Create app/page.tsx (home)**
+
+```tsx
+import Script from 'next/script';
+import { loadPageContent } from '@/lib/page-content';
 
 export default function HomePage() {
-  const html = fs.readFileSync(
-    path.join(process.cwd(), 'content/home.html'),
-    'utf-8'
-  );
+  const { html, scripts } = loadPageContent('home.html');
   return (
-    <div
-      className="preserved-page preserved-page--home"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <>
+      <div
+        className="preserved-page preserved-page--home"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {scripts.map((body, i) => (
+        <Script
+          key={i}
+          id={`home-inline-${i}`}
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{ __html: body }}
+        />
+      ))}
+    </>
   );
 }
 ```
 
-- [ ] **Step 7.2: Create app/shop/page.tsx**
+- [ ] **Step 7.3: Create app/shop/page.tsx**
 
 ```tsx
-import fs from 'node:fs';
-import path from 'node:path';
+import Script from 'next/script';
+import { loadPageContent } from '@/lib/page-content';
 
 export default function ShopPage() {
-  const html = fs.readFileSync(
-    path.join(process.cwd(), 'content/shop.html'),
-    'utf-8'
-  );
+  const { html, scripts } = loadPageContent('shop.html');
   return (
-    <div
-      className="preserved-page preserved-page--shop"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <>
+      <div
+        className="preserved-page preserved-page--shop"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {scripts.map((body, i) => (
+        <Script
+          key={i}
+          id={`shop-inline-${i}`}
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{ __html: body }}
+        />
+      ))}
+    </>
   );
 }
 ```
 
-- [ ] **Step 7.3: Create app/authenticate/page.tsx**
+- [ ] **Step 7.4: Create app/authenticate/page.tsx**
 
 ```tsx
-import fs from 'node:fs';
-import path from 'node:path';
+import Script from 'next/script';
+import { loadPageContent } from '@/lib/page-content';
 
 export default function AuthenticatePage() {
-  const html = fs.readFileSync(
-    path.join(process.cwd(), 'content/authenticate.html'),
-    'utf-8'
-  );
+  const { html, scripts } = loadPageContent('authenticate.html');
   return (
-    <div
-      className="preserved-page preserved-page--authenticate"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <>
+      <div
+        className="preserved-page preserved-page--authenticate"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {scripts.map((body, i) => (
+        <Script
+          key={i}
+          id={`authenticate-inline-${i}`}
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{ __html: body }}
+        />
+      ))}
+    </>
   );
 }
 ```
 
-- [ ] **Step 7.4: TypeScript check**
+- [ ] **Step 7.5: TypeScript check**
 
 Run: `npx tsc --noEmit`
-Expected: no errors.
+Expected: no errors. The `@/lib/page-content` alias should resolve via the `"paths"` in `tsconfig.json`.
 
-- [ ] **Step 7.5: Commit**
+- [ ] **Step 7.6: Commit**
 
 ```bash
-git add app/page.tsx app/shop/page.tsx app/authenticate/page.tsx
-git commit -m "feat: add three route pages that inject preserved HTML content"
+git add lib/page-content.ts app/page.tsx app/shop/page.tsx app/authenticate/page.tsx
+git commit -m "feat: add three route pages with HTML injection and script re-execution
+
+Each page reads its content file at build time, splits out <script> blocks,
+injects the remaining HTML via dangerouslySetInnerHTML, and re-adds the
+scripts via Next.js's <Script strategy=\"afterInteractive\">. This preserves
+FAQ accordion, scroll-reveal animations, sticky-nav handler, and form-submit
+button feedback."
 ```
 
 ---
