@@ -1,22 +1,21 @@
-import Script from 'next/script';
+import { InlineScripts } from '@/lib/InlineScripts';
 import { loadPageContent } from '@/lib/page-content';
 
 export default function HomePage() {
-  const { html, scripts } = loadPageContent('home.html');
+  const { stylesheets, styles, html, scripts } = loadPageContent('home.html');
   return (
     <>
+      {stylesheets.map((href, i) => (
+        <link key={`ss-${i}`} rel="stylesheet" href={href} />
+      ))}
+      {styles.map((css, i) => (
+        <style key={`st-${i}`} dangerouslySetInnerHTML={{ __html: css }} />
+      ))}
       <div
         className="preserved-page preserved-page--home"
         dangerouslySetInnerHTML={{ __html: html }}
       />
-      {scripts.map((body, i) => (
-        <Script
-          key={i}
-          id={`home-inline-${i}`}
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: body }}
-        />
-      ))}
+      <InlineScripts scripts={scripts} />
     </>
   );
 }
