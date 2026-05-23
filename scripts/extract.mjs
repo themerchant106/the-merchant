@@ -24,8 +24,6 @@ const MIME_EXT = {
   'image/webp': 'webp'
 };
 
-const DATA_URI_RE = /data:(image\/[a-z0-9+.-]+);base64,([A-Za-z0-9+/=]+)/g;
-
 /**
  * Decode every base64 data: image URI in `html` to a file under
  * `{baseDir}/public/images/{route}/img-N.{ext}` and replace the URI in-place
@@ -37,36 +35,42 @@ export async function extractBase64Images(html, route, baseDir) {
   const outDir = path.join(baseDir, 'public', 'images', route);
   await fs.mkdir(outDir, { recursive: true });
 
-  const seen = new Map(); // dataUri -> publicPath
+  const seen = new Map();
   let counter = 0;
-  let result = '';
-  let lastIndex = 0;
-  let match;
+  const replacements = []; // { index, length, publicPath }
+  const writes = [];        // Promise<void>[]
 
-  // Reset regex state for safety across calls.
-  DATA_URI_RE.lastIndex = 0;
+  const dataUriRe = /data:(image\/[a-z0-9+.-]+);base64,([A-Za-z0-9+/=\s]+)/g;
 
-  while ((match = DATA_URI_RE.exec(html)) !== null) {
+  for (const match of html.matchAll(dataUriRe)) {
     const fullMatch = match[0];
     const mime = match[1].toLowerCase();
-    const payload = match[2];
+    const payload = match[2].replace(/\s+/g, '');
 
     let publicPath = seen.get(fullMatch);
     if (!publicPath) {
       const ext = MIME_EXT[mime] ?? 'bin';
       const fileName = `img-${counter++}.${ext}`;
-      await fs.writeFile(
-        path.join(outDir, fileName),
-        Buffer.from(payload, 'base64')
-      );
       publicPath = `/images/${route}/${fileName}`;
       seen.set(fullMatch, publicPath);
+      writes.push(
+        fs.writeFile(path.join(outDir, fileName), Buffer.from(payload, 'base64'))
+      );
     }
 
-    result += html.slice(lastIndex, match.index) + publicPath;
-    lastIndex = DATA_URI_RE.lastIndex;
+    replacements.push({ index: match.index, length: fullMatch.length, publicPath });
   }
-  result += html.slice(lastIndex);
+
+  await Promise.all(writes);
+
+  // Build result string from the replacements list in document order.
+  let result = '';
+  let cursor = 0;
+  for (const { index, length, publicPath } of replacements) {
+    result += html.slice(cursor, index) + publicPath;
+    cursor = index + length;
+  }
+  result += html.slice(cursor);
   return result;
 }
 
@@ -87,14 +91,22 @@ export function rewriteLinks(html) {
  * Throws if `<body>` cannot be found.
  */
 export function extractContent(html) {
-  const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-  if (!bodyMatch) throw new Error('Could not find <body> in source HTML');
-  const body = bodyMatch[1];
+  const bodyOpenMatch = html.match(/<body[^>]*>/i);
+  if (!bodyOpenMatch) throw new Error('Could not find <body> in source HTML');
+  const bodyStart = bodyOpenMatch.index + bodyOpenMatch[0].length;
+  const bodyCloseIdx = html.lastIndexOf('</body>');
+  const body = bodyCloseIdx === -1
+    ? html.slice(bodyStart)
+    : html.slice(bodyStart, bodyCloseIdx);
 
-  const headMatch = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+  const headOpenMatch = html.match(/<head[^>]*>/i);
   let headBits = '';
-  if (headMatch) {
-    const head = headMatch[1];
+  if (headOpenMatch) {
+    const headStart = headOpenMatch.index + headOpenMatch[0].length;
+    const headCloseIdx = html.lastIndexOf('</head>');
+    const head = headCloseIdx === -1
+      ? html.slice(headStart)
+      : html.slice(headStart, headCloseIdx);
     const linkTags = [...head.matchAll(/<link\s[^>]*?>/gi)].map(m => m[0]);
     const styleTags = [...head.matchAll(/<style[^>]*>[\s\S]*?<\/style>/gi)].map(m => m[0]);
     headBits = [...linkTags, ...styleTags].join('\n');
