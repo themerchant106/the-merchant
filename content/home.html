@@ -348,6 +348,24 @@ nav.scrolled{
   font-size:1.07rem;color:var(--textlt);line-height:1.85;
 }
 .sa-intro-body+.sa-intro-body{margin-top:1rem;}
+.sa-hero{
+  display:grid;grid-template-columns:1.1fr 1fr;
+  gap:5vw;align-items:center;
+}
+.sa-hero-left{max-width:560px;}
+.sa-hero-left .sa-cta{margin-top:2rem;}
+.sa-hero-right{
+  background:var(--ink);
+  border:1px solid var(--border);
+  aspect-ratio:1/1;max-width:460px;width:100%;
+  margin-left:auto;
+  display:flex;align-items:center;justify-content:center;
+  padding:2.5rem;
+}
+.sa-hero-right img{
+  width:100%;max-width:280px;height:auto;object-fit:contain;
+  filter:drop-shadow(0 4px 16px rgba(0,0,0,0.4));
+}
 .sa-pillars{
   display:grid;grid-template-columns:1fr 1fr;
   gap:1.5rem;margin-top:3.5rem;
@@ -621,6 +639,9 @@ footer{
   
   
   #authenticate{padding:6rem 8vw;}
+  .sa-hero{grid-template-columns:1fr;gap:2.5rem;}
+  .sa-hero-right{aspect-ratio:16/9;max-width:100%;margin:0;padding:2rem;}
+  .sa-hero-right img{max-width:200px;}
   .sa-pillars{grid-template-columns:1fr;}
   #craft{grid-template-columns:1fr;}
   .craft-img-wrap{display:none;}
@@ -825,14 +846,19 @@ footer{
 
 <!-- SA 4-PILLAR -->
 <section id="authenticate">
-  <div class="sa-intro">
-    <div class="section-tag reveal">OUR STANDARD OF TRUTH</div>
-    <h2 class="display reveal d1">Serendib<br><em>Authenticate&#8482;</em></h2>
-    <div class="sa-logo-wrap reveal d2">
+  <div class="sa-hero">
+    <div class="sa-hero-left">
+      <div class="section-tag reveal">OUR STANDARD OF TRUTH</div>
+      <h2 class="display reveal d1">Serendib<br><em>Authenticate&#8482;</em></h2>
+      <p class="sa-intro-body reveal d2">The modern spice trade operates on ambiguity — mixing origins, diluting labels, and trading on the name of Ceylon without delivering its substance. For The Merchant, quality without empirical proof is unfinished work.</p>
+      <p class="sa-intro-body reveal d3">We engineered the Serendib Authenticate framework to replace passive trust with traceable, scientifically verified assurance. Four disciplines. One unyielding standard.</p>
+      <div class="sa-cta reveal d3">
+        <a href="/authenticate" class="sa-link-dark">SERENDIB AUTHENTICATE PORTAL</a>
+      </div>
+    </div>
+    <div class="sa-hero-right reveal d2">
       <img src="/images/home/img-11.png" alt="Serendib Authenticate">
     </div>
-    <p class="sa-intro-body reveal d2">The modern spice trade operates on ambiguity — mixing origins, diluting labels, and trading on the name of Ceylon without delivering its substance. For The Merchant, quality without empirical proof is unfinished work.</p>
-    <p class="sa-intro-body reveal d3">We engineered the Serendib Authenticate framework to replace passive trust with traceable, scientifically verified assurance. Four disciplines. One unyielding standard.</p>
   </div>
   <div class="sa-pillars reveal d2">
     <div class="sa-pillar">
@@ -855,9 +881,6 @@ footer{
       <div class="sa-pillar-title">PROOF DISPLAY</div>
       <p class="sa-pillar-body">Every shipment carries a traceable batch number, granting the buyer direct access to the documentation behind their specific order. The proof is not held by The Merchant. It belongs to you.</p>
     </div>
-  </div>
-  <div class="sa-cta reveal d3">
-    <a href="/authenticate" class="sa-link-dark">SERENDIB AUTHENTICATE PORTAL</a>
   </div>
 </section>
 
